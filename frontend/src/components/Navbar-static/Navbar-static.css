@@ -1,0 +1,50 @@
+.navbar{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.navbar-left{
+    margin-left: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.company-name{
+    color: #000;
+    font-size: 24px;
+    font-family: Inter;
+    font-weight: 500;
+}
+
+.navbar-right{
+    margin-right: 40px;
+    justify-content: right;
+    align-items: center;
+}
+
+.nav-links{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.nav-item {
+  list-style-type: none;
+}
+
+.nav-links a{
+    padding-left: 40px;
+    padding-right: 40px;
+    text-decoration: none;
+    color: #000;
+    font-size: 18px;
+    font-family: Inter; 
+}
+
+.user{
+    margin-left: 70px;
+    padding-right: 40px;
+}
