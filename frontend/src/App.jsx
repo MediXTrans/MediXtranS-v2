@@ -1,5 +1,7 @@
 // import logo from "./logo.svg";
 // import "./App.css";
+import Navbar from "./components/Navbar-static/Navbar-static";
+import NavbarScroll from "./components/Navbar-scroll/Navbar-scroll";
 import Login from "./pages/Login/Login";
 import SignUp from "./pages/SignUp/SignUp";
 
@@ -13,7 +15,9 @@ import {
 
 const router = createBrowserRouter(
   createRoutesFromElements([
-    <Route path="/login" element={<Login />} />,
+    <Route path="/" element={<Navbar />} />,
+    <Route path="/nav" element={<NavbarScroll/>} />,
+      <Route path="/login" element={<Login />} />,
       <Route path="/signup" element={<SignUp />} />
   ])
 );
