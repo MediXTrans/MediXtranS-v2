@@ -14,9 +14,9 @@
 }
 
 .gray-section {
-   width: 50%;
+  width: 50%;
   height: 100%;
-    flex-shrink: 0;
+  flex-shrink: 0;
   background-color: #ebebeb
 
 }
@@ -30,7 +30,8 @@
 }
 
 .main-form-container{
-  width: 331px;
+  align-items: center;
+  width: 300px;
   height: 424px;
   flex-shrink: 0;
   border-radius: 25px;
@@ -38,12 +39,131 @@
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   color: #fff;
   margin: 128px 50px 170px 260px;
+  padding: 25px 30px 20px 30px
+}
+
+.form-header{
+  margin-bottom: 20px;
+    align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.logo{
+  width: 64px;
+  height: 50px;
+  flex-shrink: 0;
+}
+
+.logo-name{
+  display: flex;
+  flex-direction: column;
+  color: #000;
+  flex-shrink: 0;
+  font-size: 16px;
+  font-family: Inter;
+  font-weight: 500;
 }
 
 
+.main-form-container form {
+  display: flex;
+  flex-direction: column;
+}
 
+.main-form-container label {
+  margin-top: 10px;
+  color: #9C9C9C;
+  font-size: 12px;
+  font-family: Inter;
+  font-weight: 500;
+}
 
+.main-form-container input {
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
 
+.main-form-container button {
+  padding: 10px;
+  margin-top: 20px;
+  color: white;
+  border: none;
+  height: 40px;
+  cursor: pointer;
+  border-radius: 10px;
+  background: #88D2DF;
+}
+
+.main-form-container button:hover {
+  background-color: #14616e;
+}
+
+.main-form-container button:focus {
+  outline: none;
+}
+
+.remember-forgot-container{
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.remember-forgot-container a{
+  color: #88D2DF;
+  font-size: 10px;
+  font-family: Inter;
+  font-weight: 500;
+   text-decoration: none;
+}
+
+.rememberMe{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+}
+
+.rememberMe label {
+  margin-top: 0;
+  color: #8B8B8B;
+  font-size: 10px;
+  font-family: Inter;
+  font-weight: 500;
+  text-align: center;
+}
+
+#rememberMe{
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+}
+
+.login-message{
+  margin-top: 10px;
+  margin-left: 50px;
+  display: flex;
+  width: 201px;
+  height: 14px;
+  flex-direction: row;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #9C9C9C;
+  font-size: 12px;
+  font-family: Inter;
+  font-weight: 500;
+}
+
+.login-message a{
+  color: #88D2DF;
+  text-decoration: none;
+}
 
 
 

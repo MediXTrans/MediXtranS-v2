@@ -1,5 +1,7 @@
 // import logo from "./logo.svg";
 // import "./App.css";
+import Navbar from "./components/Navbar-static/Navbar-static";
+import NavbarScroll from "./components/Navbar-scroll/Navbar-scroll";
 import Login from "./pages/Login/Login";
 import SignUp from "./pages/SignUp/SignUp";
 import Record from "./pages/Record/Record";
@@ -21,6 +23,8 @@ const router = createBrowserRouter(
     <Route path="/record" element={<Record />} />,
     <Route path="/upload" element={<Upload />} />,
     <Route path="/transcription" element={<Transcription />} />,
+    <Route path="/" element={<Navbar />} />,
+    <Route path="/nav" element={<NavbarScroll/>} />,
   ])
 );
 function App() {
