@@ -1,7 +1,6 @@
 import React, { useState }  from "react";
 import "./Auth.css";
-import authImage from "../../images/Authentication-rafiki 1.png";
-import logo from "../../images/mediXlogo 2.png";
+import {Authentication_rafiki,mediXlogo_2} from "../../assets";
 const Auth = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -32,13 +31,13 @@ const Auth = () => {
   return (
     <div className="container">
       <div className="aqua-section">
-        <img src={authImage} className="auth-image" alt/>
+        <img src={Authentication_rafiki} className="auth-image" alt/>
       </div>
       <div className="gray-section">
         <div className="main-form-container">
           <div className="form-header">
             <div className="logo">
-              <img src={logo} alt="logo" />
+              <img src={mediXlogo_2} alt="logo" />
             </div>
             <div className="logo-name">MediXtranS</div>
           </div>

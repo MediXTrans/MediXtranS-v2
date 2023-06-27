@@ -7,6 +7,12 @@ import Os_upgrade_2 from "./Os_upgrade_2.png";
 import audit from "./audit.png";
 import vector_down from "./Vector_down.png";
 import vector_send from "./Vector_send.png";
+import Authentication_rafiki from "./Authentication_rafiki.png";
+import basil_upload_outline from "./basil_upload_outline.png";
+import ic_twotone_mic from "./ic_twotone_mic.png";
+import mediXlogo_2 from "./mediXlogo_2.png";
+import tabler_home from "./tabler_home.png";
+import User_logo from "./User_logo.png";
 export {
     voice_assignment_1,
     microphone,
@@ -16,5 +22,11 @@ export {
     Os_upgrade_2,
     audit,
     vector_down,
-    vector_send
+    vector_send,
+    Authentication_rafiki,
+    basil_upload_outline,
+    ic_twotone_mic,
+    mediXlogo_2,
+    tabler_home,
+    User_logo
 };

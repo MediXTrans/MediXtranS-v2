@@ -1,14 +1,15 @@
 import React from 'react'
 import "./Navbar-static.css"
-import Logo from "../../images/mediXlogo 2 (1).png";
-import userLogo from "../../images/User_logo.png";
+// import Logo from "../../images/mediXlogo 2 (1).png";
+// import userLogo from "../../images/User_logo.png";
+import {mediXlogo_2,User_logo} from "../../assets";
 
 const Navbar = () => {
   return (
     <nav className="navbar">
       <div className="navbar-left">
         <div className="logo">
-          <img src={Logo} alt="logo" />
+          <img src={mediXlogo_2} alt="logo" />
         </div>
         <div className="company-name">MediXtrans</div>
       </div>
@@ -24,7 +25,7 @@ const Navbar = () => {
             <a href="Upload">Upload</a>
           </li>
           <div className="user">
-            <img src={userLogo} alt="User" />
+            <img src={User_logo} alt="User" />
           </div>
         </ul>
       </div>
