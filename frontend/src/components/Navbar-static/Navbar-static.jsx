@@ -1,7 +1,5 @@
 import React from 'react'
 import "./Navbar-static.css"
-// import Logo from "../../images/mediXlogo 2 (1).png";
-// import userLogo from "../../images/User_logo.png";
 import {mediXlogo_2,User_logo} from "../../assets";
 
 const Navbar = () => {

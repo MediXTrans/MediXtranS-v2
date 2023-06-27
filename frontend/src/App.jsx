@@ -1,5 +1,3 @@
-// import logo from "./logo.svg";
-// import "./App.css";
 import Navbar from "./components/Navbar-static/Navbar-static";
 import NavbarScroll from "./components/Navbar-scroll/Navbar-scroll";
 import Login from "./pages/Login/Login";

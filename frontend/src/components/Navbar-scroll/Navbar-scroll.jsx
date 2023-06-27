@@ -1,10 +1,5 @@
 import React from 'react'
 import "./Navbar-scroll.css"
-// import Logo from "../../images/mediXlogo 2 (1).png";
-// import Home from "../../images/tabler_home.png";
-// import Record from "../../images/ic_twotone-mic.png";
-// import Upload from "../../images/basil_upload-outline.png";
-// import userLogo from "../../images/User_logo.png";
 import {mediXlogo_2,tabler_home,ic_twotone_mic,basil_upload_outline,User_logo} from "../../assets";
 
 const NavbarScroll = () => {
