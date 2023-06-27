@@ -2,6 +2,9 @@
 // import "./App.css";
 import Login from "./pages/Login/Login";
 import SignUp from "./pages/SignUp/SignUp";
+import Record from "./pages/Record/Record";
+import Upload from "./pages/Upload/Upload";
+import Transcription from "./pages/Transcription/Transcription";
 
 import {
   createBrowserRouter,
@@ -14,7 +17,10 @@ import {
 const router = createBrowserRouter(
   createRoutesFromElements([
     <Route path="/login" element={<Login />} />,
-      <Route path="/signup" element={<SignUp />} />
+    <Route path="/signup" element={<SignUp />} />,
+    <Route path="/record" element={<Record />} />,
+    <Route path="/upload" element={<Upload />} />,
+    <Route path="/transcription" element={<Transcription />} />,
   ])
 );
 function App() {
