@@ -1,6 +1,5 @@
-import Navbar from "./components/Navbar-static/Navbar-static";
-import NavbarScroll from "./components/Navbar-scroll/Navbar-scroll";
-import {Login,Register,Upload,Transcription,Record} from "./pages";
+import {Navbar} from "./components";
+import {Login,Register,Upload,Transcription,Record, Home} from "./pages";
 
 import {
   createBrowserRouter,
@@ -18,8 +17,7 @@ const router = createBrowserRouter(
     <Route path="/record" element={<Record />} />,
     <Route path="/upload" element={<Upload />} />,
     <Route path="/transcription" element={<Transcription />} />,
-    <Route path="/" element={<Navbar />} />,
-    <Route path="/nav" element={<NavbarScroll/>} />,
+    <Route path="/home" element={<Home />} />,
   ])
 );
 function App() {

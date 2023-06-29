@@ -1,9 +1,11 @@
 import React from 'react';
 import { vector_right, mediXtransFlow1, mediXtransUseCase1, Os_upgrade_2 } from '../assets';
+import { Navbar } from '../components';
 
 export default function Upload() {
   return (
     <div className='overflow-hidden'>
+      <Navbar />
       <div className='w-[100vw] md:mx-[30px] flex flex-col flex-wrap items-center justify-center lg:flex-row md:p-[5%]'>
         <div className='flex-[6] md:w-[100%] h-[100%] flex flex-col flex-wrap justify-between'>
           <div className='h-[60%] m-0 p-[10px] md:p-0 flex-1 flex flex-col'>
