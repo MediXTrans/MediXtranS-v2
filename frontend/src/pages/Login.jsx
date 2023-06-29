@@ -1,4 +1,5 @@
 import { React, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { server } from "../App";
 import { mediXlogo_2, Authentication_rafiki, vector_eye } from "../assets/index.js";
@@ -8,6 +9,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
+  const navigate = useNavigate();
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -18,11 +20,35 @@ export default function Login() {
   };
 
   const handleRememberMeChange = (e) => {
-    setRememberMe(e.target.value);
+    setRememberMe(!rememberMe);
   };
+
+  function togglePasswordVisibility(id) {
+    var passwordField = document.getElementById(id);
+    if (passwordField.type === "password") {
+      passwordField.type = "text";
+      setTimeout(function() {
+        passwordField.type = "password";
+      }, 1000);
+    } else {
+      passwordField.type = "password";
+    }
+  }
+
+  function isValidEmail(email) {
+    // Regular expression for email validation
+    var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    
+    // Check if the email matches the regular expression
+    return emailRegex.test(email);
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!isValidEmail(email)) {
+      console.log("Invalid email");
+      return;
+    }
     // Handle form submission logic here
     // You can access the email, password, and confirmPassword state values here
     try {
@@ -40,9 +66,11 @@ export default function Login() {
           withCredentials: true,
         }
       );
+      navigate('/home');
       console.log("Logged in successfully");
     } catch (error) {
-      console.log(error);
+      console.log(error.response.data.message);
+
     }
   };
 
@@ -82,11 +110,12 @@ export default function Login() {
                 <div className="w-[100%] flex flex-row items-center border-[1px] border-[#9C9C9C] rounded-md ">
                 <input
                   type="password"
+                  id="passwordField"
                   value={password}
                   onChange={handlePasswordChange}
                   className=" px-2 py-1 rounded-md w-[90%]"
                 />
-                <img src={vector_eye} alt="" className=" w-[22px] h-[14.14px]"/>
+                <img src={vector_eye}  onClick={()=> togglePasswordVisibility("passwordField")} alt="" className=" w-[22px] h-[14.14px]"/>
                 </div>
               </div>
               <div className="mt-[10px] flex flex-row text-[12px] justify-between">
