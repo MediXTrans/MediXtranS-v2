@@ -1,5 +1,5 @@
 import React from 'react';
-import { vector_right, microphone, voice_assignment_1 } from '../../assets';
+import { vector_right, microphone, voice_assignment_1 } from '../assets';
 
 export default function Record() {
   return (
