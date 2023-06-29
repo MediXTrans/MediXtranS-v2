@@ -1,5 +1,5 @@
 import React from 'react';
-import { vector_right, mediXtransFlow1, mediXtransUseCase1, Os_upgrade_2 } from '../../assets';
+import { vector_right, mediXtransFlow1, mediXtransUseCase1, Os_upgrade_2 } from '../assets';
 
 export default function Upload() {
   return (

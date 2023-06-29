@@ -1,5 +1,5 @@
 import React from 'react';
-import { audit, vector_down,vector_send } from '../../assets';
+import { audit, vector_down,vector_send } from '../assets';
 
 export default function Transcription() {
   return (

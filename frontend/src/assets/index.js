@@ -13,6 +13,7 @@ import ic_twotone_mic from "./ic_twotone_mic.png";
 import mediXlogo_2 from "./mediXlogo_2.png";
 import tabler_home from "./tabler_home.png";
 import User_logo from "./User_logo.png";
+import vector_eye from "./vector_eye.png";
 export {
     voice_assignment_1,
     microphone,
@@ -28,5 +29,6 @@ export {
     ic_twotone_mic,
     mediXlogo_2,
     tabler_home,
-    User_logo
+    User_logo,
+    vector_eye
 };
