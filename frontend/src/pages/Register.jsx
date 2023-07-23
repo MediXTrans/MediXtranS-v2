@@ -115,8 +115,8 @@ export default function Register() {
     try {
       console.log(email, password, confirmPassword);
       const data = await axios.post(
-        // `${server}/register`,
         "http://localhost:4000/api/v2/users/register",
+        //`${server}/users/register`,
         {
           email,
           password,
