@@ -1,5 +1,6 @@
 import express from "express";
 import userRouter from "./routes/user.js";
+import textTableRouter from "./routes/textTable.js";
 import { config } from "dotenv";
 import cookieParser from "cookie-parser";
 import { errorMiddleware } from "./middlewares/error.js";
@@ -24,6 +25,7 @@ app.use(
 
 // Using routes
 app.use("/api/v2/users", userRouter);
+app.use("/api/v2/text", textTableRouter);
 
 app.get("/", (req, res) => {
   console.log("NICE");
