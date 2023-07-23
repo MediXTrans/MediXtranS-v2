@@ -1,9 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect} from "react";
 import { vector_right, microphone, voice_assignment_1 } from '../assets';
 import { Navbar } from '../components';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import React, { useState, useEffect} from "react";
 import axios from "axios";
 import { server } from "../App";
 
@@ -45,14 +44,14 @@ export default function Record() {
     };
   }, [isRecording]);
 
-  const btn = document.getElementById("elem");
+  // const btn = document.getElementById("elem");
 
-  btn.addEventListener("click", () =>
-    window.scrollTo({
-      top: 1000,
-      behavior: "smooth",
-    })
-  );
+  // btn.addEventListener("click", () =>
+  //   window.scrollTo({
+  //     top: 1000,
+  //     behavior: "smooth",
+  //   })
+  // );
 
   const handleStart = () => {
     setIsRecording(true);
@@ -106,7 +105,10 @@ export default function Record() {
             <button
               className="w-[197px] h-[44px] shrink-0 justify-center bg-[#6A6868] rounded-[6px] text-white"
               type="submit"
-              id="elem"
+              onClick={()=>window.scrollTo({
+                top: 1000,
+                behavior: "smooth",
+              })}
             >
               <p className="font-[Roboto] font-[700]">Start Recording</p>
             </button>

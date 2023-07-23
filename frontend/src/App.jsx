@@ -1,5 +1,5 @@
 import {Navbar} from "./components";
-import {Login,Register,Upload,Transcription,Record, Home} from "./pages";
+import {Login,Register,Upload,Transcription,Record, Home, LandingPage} from "./pages";
 
 import {
   createBrowserRouter,
@@ -18,6 +18,7 @@ const router = createBrowserRouter(
     <Route path="/upload" element={<Upload />} />,
     <Route path="/transcription" element={<Transcription />} />,
     <Route path="/home" element={<Home />} />,
+    <Route path="/" element={<LandingPage />} />,
   ])
 );
 function App() {
