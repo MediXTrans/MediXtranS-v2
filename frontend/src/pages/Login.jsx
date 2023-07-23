@@ -1,8 +1,9 @@
-import { React, useState } from "react";
+import { React, useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { server } from "../App";
 import { mediXlogo_2, Authentication_rafiki, vector_eye } from "../assets/index.js";
+import { useSelector } from "react-redux";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -10,6 +11,13 @@ export default function Login() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
+  const isLoggedIn = useSelector(state=>state.auth.isLoggedIn);
+
+  useEffect(() =>{
+    if(isLoggedIn){
+      return navigate("./home");
+    }
+  },[isLoggedIn])
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -52,9 +60,10 @@ export default function Login() {
     // Handle form submission logic here
     // You can access the email, password, and confirmPassword state values here
     try {
-      console.log(email, password, confirmPassword);
+      console.log(email, password);
       const data = await axios.post(
-        `${server}/login`,
+        // `${server}/login`,
+        "http://localhost:4000/api/v2/users/login",
         {
           email,
           password
@@ -66,11 +75,10 @@ export default function Login() {
           withCredentials: true,
         }
       );
-      navigate('/home');
       console.log("Logged in successfully");
+      navigate('/home');
     } catch (error) {
-      console.log(error.response.data.message);
-
+      console.log(error);
     }
   };
 
@@ -97,7 +105,7 @@ export default function Login() {
               <div className="flex flex-col">
                 <label htmlFor="email">email</label>
                 <input
-                  type="text"
+                  type="email"
                   id="email"
                   name="email"
                   value={email}

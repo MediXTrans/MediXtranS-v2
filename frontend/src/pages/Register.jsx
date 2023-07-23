@@ -3,6 +3,11 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { server } from "../App";
 import { mediXlogo_2, Authentication_rafiki, vector_eye } from "../assets/index.js";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { authActions } from "../store/auth-slice";
+import Cookies from "js-cookie"
+// import jwt from 'jsonwebtoken';
 
 export default function Register() {
   const [email, setEmail] = useState("");
@@ -11,6 +16,56 @@ export default function Register() {
   const [rememberMe, setRememberMe] = useState(false);
   const [alreadyClicked,setAlereadyClicked] = useState(false);
   const navigate = useNavigate();
+  const isLoggedIn = useSelector(state=>state.auth.isLoggedIn);
+  const dispatch = useDispatch();
+
+  
+  useEffect(() => {
+    checkCookie();
+    if(isLoggedIn) {
+      return navigate("./home");
+    }
+  },[isLoggedIn]);
+
+  const checkCookie = () => {
+    const myCookieValue = Cookies.get('mediXtrans');
+    if(myCookieValue){
+      dispatch(authActions.login());
+    }
+    else{
+      dispatch(authActions.logout());
+    }
+  };
+
+
+  // useEffect(() => {
+  //   checkAuthentication();
+  // }, [])
+  
+  // const checkAuthentication = () => {
+  //   const token = localStorage.getItem('mediXtrans');
+  //   if (token) {
+  //     try {
+  //       const decodedToken = jwt.decode(token);
+  //       const currentTime = Date.now() / 1000;
+
+  //       // Check if the token is expired
+  //       if (decodedToken.exp < currentTime) {
+  //         setIsAuthenticated(false);
+  //       } else if (decodedToken.aud !== 'https://medixtrans.onrender.com/') {
+  //         // Replace 'your-site' with the expected audience for your site
+  //         setIsAuthenticated(false);
+  //       } else {
+  //         setIsAuthenticated(true);
+  //       }
+  //     } catch (error) {
+  //       console.error('Error decoding token:', error);
+  //       setIsAuthenticated(false);
+  //     }
+  //   } else {
+  //     setIsAuthenticated(false);
+  //   }
+  // };
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -60,7 +115,8 @@ export default function Register() {
     try {
       console.log(email, password, confirmPassword);
       const data = await axios.post(
-        `${server}/register`,
+        // `${server}/register`,
+        "http://localhost:4000/api/v2/users/register",
         {
           email,
           password,
@@ -75,6 +131,8 @@ export default function Register() {
       );
       navigate('/home');
       setAlereadyClicked(false);
+      await dispatch(authActions.login);
+      console.log(isLoggedIn);
       console.log("Registration successful");
     } catch (error) {
       console.log(error);
@@ -105,7 +163,7 @@ export default function Register() {
               <div className="flex flex-col">
                 <label htmlFor="email">email</label>
                 <input
-                  type="text"
+                  type="email"
                   id="email"
                   name="email"
                   value={email}
