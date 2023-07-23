@@ -1,11 +1,21 @@
+import React, { useEffect } from 'react';
+import { vector_right, microphone, voice_assignment_1 } from '../assets';
+import { Navbar } from '../components';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import React, { useState, useEffect} from "react";
 import axios from "axios";
 import { server } from "../App";
-import { Navigate } from "react-router-dom";
-import { vector_right, microphone, voice_assignment_1 } from "../assets";
-import { Navbar } from "../components";
 
 export default function Record() {
+  const isLoggedIn = useSelector(state=>state.auth.isLoggedIn);
+  const navigate = useNavigate();
+  // useEffect(() =>{
+  //   if(!isLoggedIn){
+  //     return navigate("./login");
+  //   }
+  // },[isLoggedIn])
+
   const [isRecording, setIsRecording] = useState(false);
   const [text, setText] = useState("");
   const [submitted, setSubmitted] = useState(false);
@@ -76,9 +86,8 @@ export default function Record() {
     }
   }
   if (submitted) {
-    return <Navigate to="/transcription"/>;
+    return navigate("./transcription");
   }
-
   return (
     <div className="overflow-hidden">
       <Navbar />

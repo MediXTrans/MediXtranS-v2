@@ -1,18 +1,24 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./Home.css";
 // import { Mic } from "react-bootstrap-icons";
 import {Navbar} from "../components";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default function () {
   const navigate = useNavigate();
+  const isLoggedIn = useSelector(state=>state.auth.isLoggedIn);
+  console.log(isLoggedIn);
+
   const someEventHandler = () => {
     navigate("/speech");
   };
   const uploadEventHandler = () =>{
     navigate("/uploadFile")
   }
+
+  // console.log(isAuthenticated);
   return (
     <div className="Home" >
       <Navbar />

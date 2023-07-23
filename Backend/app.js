@@ -5,6 +5,7 @@ import { config } from "dotenv";
 import cookieParser from "cookie-parser";
 import { errorMiddleware } from "./middlewares/error.js";
 import cors from "cors";
+import morgan from "morgan";
 
 export const app = express();
 
@@ -15,6 +16,7 @@ config({
 // Using Middlewares
 app.use(express.json());
 app.use(cookieParser());
+app.use(morgan("common"));
 app.use(
   cors({
     origin: [process.env.FRONTEND_URL],
