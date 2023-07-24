@@ -1,6 +1,6 @@
 import React from 'react';
 import { audit, vector_down,vector_send } from '../assets';
-import { Navbar } from '../components';
+import { Footer, Navbar } from '../components';
 export default function Transcription() {
   return (
     <div className='overflow-hidden'>
@@ -47,6 +47,7 @@ export default function Transcription() {
           </p>
         </button>
       </div>
+      <Footer />
     </div>
   );
 }

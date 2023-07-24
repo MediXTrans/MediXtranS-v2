@@ -1,5 +1,6 @@
 import React, { useState, useEffect} from "react";
 import { vector_right, microphone, voice_assignment_1 } from '../assets';
+import {Footer} from "../components";
 import { Navbar } from '../components';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -184,6 +185,7 @@ export default function Record() {
           />
         </div>
       </div>
+      <Footer />
     </div>
   );
 }
