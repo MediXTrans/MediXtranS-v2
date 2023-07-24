@@ -1,6 +1,6 @@
 import React from 'react';
 import { vector_right, mediXtransFlow1, mediXtransUseCase1, Os_upgrade_2 } from '../assets';
-import { Navbar } from '../components';
+import { Footer, Navbar } from '../components';
 
 export default function Upload() {
   return (
@@ -41,6 +41,7 @@ export default function Upload() {
           <img src={mediXtransUseCase1} alt="" />
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

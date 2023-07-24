@@ -21,6 +21,7 @@ import mediXlogo_1 from "./mediXlogo_1.png";
 import mediXlogo_4 from "./mediXlogo_4.png";
 import Safe_bro_1 from "./Safe-bro_1.png";
 import voice_control from "./voice_control.png";
+import Group from "./Group.png";
 
 export {
     voice_assignment_1,
@@ -45,5 +46,6 @@ export {
     mediXlogo_1,
     mediXlogo_4,
     Safe_bro_1,
-    voice_control
+    voice_control,
+    Group
 };

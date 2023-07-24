@@ -3,7 +3,7 @@ import { voice_control, Forms_cuate1, Safe_bro_1 } from "../assets";
 import { useNavigate } from "react-router-dom";
 
 export default function Card() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const data = [
     {
       img: voice_control,
@@ -25,7 +25,7 @@ export default function Card() {
     <>
       {data.map((item, index) => {
         return (
-          <div className="flex flex-col w-[300px] p-4 m-4 gap-3 border-r-2 border-b-2 shadow-2xl drop-shadow-[0_35px_35px_rgba(0,0,0,0.25)] rounded-lg">
+          <div className="flex flex-col flex-wrap w-[300px] p-4 m-4 gap-3 border-r-2 border-b-2 shadow-2xl drop-shadow-[0_35px_35px_rgba(0,0,0,0.25)] rounded-lg">
             <div className="flex justify-center ">
               <img width="200px" src={item.img} alt="" />
             </div>

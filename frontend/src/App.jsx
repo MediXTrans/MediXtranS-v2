@@ -1,5 +1,6 @@
 import {Navbar} from "./components";
 import {Login,Register,Upload,Transcription,Record, Home, LandingPage} from "./pages";
+import "./App.css";
 
 import {
   createBrowserRouter,
