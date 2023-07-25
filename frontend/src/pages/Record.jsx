@@ -31,7 +31,7 @@ export default function Record() {
         .map((result) => result[0].transcript)
         .join("");
 
-      setText(transcript);
+      setText(text+' '+transcript);
     };
 
     recognition.onend = () => {
@@ -106,16 +106,13 @@ export default function Record() {
             <button
               className="w-[197px] h-[44px] shrink-0 justify-center bg-[#6A6868] rounded-[6px] text-white"
               type="submit"
-              onClick={()=>window.scrollTo({
-                top: 1000,
-                behavior: "smooth",
-              })}
             >
-              <p className="font-[Roboto] font-[700]">Start Recording</p>
+              <p className="font-[Roboto] font-[700]"><a href="#startRecording">Start Recording</a></p>
             </button>
             <button
               className="w-[197px] h-[44px] shrink-0 justify-center mt-2 sm:mt-0 rounded-[6px] bg-white text-[#6A6868] md:ml-[45px] border-2 border-[#6A6868]"
               type="submit"
+              onClick={()=>navigate("../upload")}
             >
               <p className="font-[Roboto] font-[700] flex flex-row justify-evenly items-center">
                 <div>Upload file</div>
@@ -138,7 +135,7 @@ export default function Record() {
         </div>
       </div>
       <hr style={{ height: "3px", backgroundColor: "black" }} />
-      <div className="flex justify-center flex-col py-[80px] md:p-[60px] lg:flex-row">
+      <div id="startRecording" className="flex justify-center flex-col py-[80px] md:p-[60px] lg:flex-row">
         <div className="flex-[4] flex-col justify-center items-center">
           <div className="flex justify-center">
             <img width={"220px"} height={"209px"} src={microphone} alt="" />
@@ -173,7 +170,7 @@ export default function Record() {
             </button>
           </div>
         </div>
-        <div className="flex-[5] border-2 w-auto h-auto flex justify-center lg:w-[680px] lg:h-[651px] shrink-0 shadow-md p-3 md:text-[19px] font-[Roboto] font-[300]">
+        <div className="flex-[5] hover:border-white border-2 w-auto h-auto flex justify-center lg:w-[680px] lg:h-[651px] shrink-0 shadow-md p-3 md:text-[19px] font-[Roboto] font-[300]">
           {/* <p className="text-justify" value={text} onChange={(e)=> setText(e.target.value)}>
             {text}
           </p>  */}
