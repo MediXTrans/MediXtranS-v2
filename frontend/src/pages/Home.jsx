@@ -57,7 +57,7 @@ export default function LandingPage() {
     <div className=" w-[100%]  overflow-x-hidden font-[Roboto] ">
       <Navbar />
       <div
-        className="w-[100vw] overflow-x-hidden h-[98vh] flex flex-col items-center"
+        className="w-[100vw] mt-10 overflow-x-hidden h-[98vh] flex flex-col items-center"
         style={firstDivStyle}
       >
         <div className="w-4/5 md:w-3/4 xl:w-1/2 h-3/4 md:h-3/4 flex flex-col items-center justify-evenly">

@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect, useRef} from "react";
 import { vector_right, microphone, voice_assignment_1 } from '../assets';
 import {Footer} from "../components";
 import { Navbar } from '../components';
@@ -15,6 +15,14 @@ export default function Record() {
   //     return navigate("./login");
   //   }
   // },[isLoggedIn])
+
+  const targetRef = useRef(null);
+  const scrollToTarget = () => {
+    targetRef.current.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    });
+  };
 
   const [isRecording, setIsRecording] = useState(false);
   const [text, setText] = useState("");
@@ -80,6 +88,7 @@ export default function Record() {
         }
       );
      setSubmitted(true);
+     navigate("../transcription");
     }
     catch (error) {
       console.log(error);
@@ -106,8 +115,9 @@ export default function Record() {
             <button
               className="w-[197px] h-[44px] shrink-0 justify-center bg-[#6A6868] rounded-[6px] text-white"
               type="submit"
+              onClick={scrollToTarget}
             >
-              <p className="font-[Roboto] font-[700]"><a href="#startRecording">Start Recording</a></p>
+              <p className="font-[Roboto] font-[700]">Start Recording</p>
             </button>
             <button
               className="w-[197px] h-[44px] shrink-0 justify-center mt-2 sm:mt-0 rounded-[6px] bg-white text-[#6A6868] md:ml-[45px] border-2 border-[#6A6868]"
@@ -134,8 +144,8 @@ export default function Record() {
           </div>
         </div>
       </div>
-      <hr style={{ height: "3px", backgroundColor: "black" }} />
-      <div id="startRecording" className="flex justify-center flex-col py-[80px] md:p-[60px] lg:flex-row">
+      <hr ref={targetRef} style={{ height: "3px", backgroundColor: "black" }} />
+      <div className="flex justify-center flex-col py-[80px] md:p-[60px] lg:flex-row">
         <div className="flex-[4] flex-col justify-center items-center">
           <div className="flex justify-center">
             <img width={"220px"} height={"209px"} src={microphone} alt="" />
