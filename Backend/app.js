@@ -18,12 +18,12 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(morgan("common"));
 app.use(
-  cors()
-  // cors({
-  //   origin: [process.env.FRONTEND_URL],
-  //   methods: ["GET", "POST", "PUT", "DELETE"],
-  //   credentials: true,
-  // })
+  cors({
+    origin:"*",
+    // origin: [process.env.FRONTEND_URL],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
 );
 
 // Using routes
