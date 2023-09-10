@@ -25,6 +25,7 @@ export default function Record() {
   };
 
   const [isRecording, setIsRecording] = useState(false);
+  const [patientid, setPatientid] = useState(12345);
   const [text, setText] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const recognition = new window.webkitSpeechRecognition();
@@ -76,17 +77,20 @@ export default function Record() {
     e.preventDefault();
     try {
       const data = await axios.post(
-        `${server}/text/generate`,
+        `${server}/api/text/generate`,
+        // `${server}/Text_API/post_api_generateText`,
         {
-          body: JSON.stringify({ text_data: text }),
+           patientid:patientid,text_data: text 
         },
         {
           headers: {
             "Content-type": "application/json",
           },
-          withCredentials: true,
+          // withCredentials: true,
         }
       );
+      console.log("data send successfully");
+      console.log(patientid+"  "+text);
      setSubmitted(true);
      navigate("../transcription");
     }

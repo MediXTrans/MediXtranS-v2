@@ -9,7 +9,8 @@ import {
   RouterProvider,
 } from "react-router-dom";
 
-export const server = "https://medixtrans.onrender.com/api/v2";
+// export const server = "https://medixtrans.onrender.com/api/v2";
+export const server = "https://medibackend.onrender.com";
 
 const router = createBrowserRouter(
   createRoutesFromElements([

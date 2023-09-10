@@ -71,7 +71,8 @@ export default function Login() {
       const data = await axios.post(
         // `${server}/login`,
         // "http://localhost:4000/api/v2/users/login",
-        `${server}/users/login`,
+        // `${server}/users/login`,
+        `${server}/api/user/login`,
         {
           email,
           password,
@@ -80,7 +81,7 @@ export default function Login() {
           headers: {
             "Content-type": "application/json",
           },
-          withCredentials: true,
+          // withCredentials: true,
         }
       );
       console.log("Logged in successfully");
