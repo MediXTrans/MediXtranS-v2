@@ -121,7 +121,8 @@ export default function Register() {
       console.log(email, password, confirmPassword);
       const data = await axios.post(
         // "http://localhost:4000/api/v2/users/register",
-        `${server}/users/register`,
+        // `${server}/users/register`,
+        `${server}/api/user/register`,
         {
           email,
           password,
@@ -131,7 +132,7 @@ export default function Register() {
           headers: {
             "Content-type": "application/json",
           },
-          withCredentials: true,
+          // withCredentials: true,
         }
       );
       navigate("/home");

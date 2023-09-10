@@ -1,57 +1,254 @@
-import React,{useRef} from 'react';
-import { audit, vector_down,vector_send } from '../assets';
-import { Footer, Navbar } from '../components';
+import React, { useRef, useState, useEffect } from "react";
+import axios from "axios"; // Import Axios library
+import { audit, vector_down, vector_send } from "../assets";
+import { Footer, Navbar } from "../components";
+
 export default function Transcription() {
   const targetRef = useRef(null);
 
+  const [inputs, setInput] = useState("");
+  const [output, setOutput] = useState([]);
+
+  const [intext, setinText] = useState("");
+  const [outext, setoutText] = useState([]);
+  const [inputArray, setInputArray] = useState([]);
+  const result = [];
+
   const scrollToTarget = () => {
     targetRef.current.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start',
+      behavior: "smooth",
+      block: "start",
     });
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("https://medibackend.onrender.com/api/text/get");
+        setInput(response.data.text_data);
+        const postResponse = await fetch(
+          "https://api-inference.huggingface.co/models/d4data/biomedical-ner-all",
+          {
+            method: "POST",
+            headers: {
+              Authorization: "Bearer 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",
+              "Content-Type": "application/json", // Specify the content type
+            },
+            body: JSON.stringify(response.data.text_data),
+          }
+        );
+  
+        if (!postResponse.ok) {
+          throw new Error("Failed to fetch data from Hugging Face API");
+        }
+  
+        setInputArray((prevInputArray) => [...prevInputArray, inputs]);
+        const result = await postResponse.json();
+        console.log("api hit request");
+        console.log(result);
+        setOutput((prevOutput) => [result]);
+        for (let i = 0; i < result.length; i++) {
+          console.log(result[i].word, result[i].score, result[i].entity_group);
+        }
+  
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+  
+
+  const getEntityColor = (entity_group) => {
+    const colors = {
+      Detailed_description: {
+        light: "#FF99D8", // Lighter shade of pink
+        dark: "#D72B6B", // Darker shade of pink
+      },
+      Age: {
+        light: "#BAA7FF", // Lighter shade of purple
+        dark: "#6236B2", // Darker shade of purple
+      },
+      History: {
+        light: "#FFC266", // Lighter shade of orange
+        dark: "#FF7F00", // Darker shade of orange
+      },
+      Nonbiological_location: {
+        light: "#E5CCFF", // Lighter shade of violet
+        dark: "#7E61B2", // Darker shade of violet
+      },
+      Disease_disorder: {
+        light: "#A7FFA7", // Lighter shade of green
+        dark: "#287C28", // Darker shade of green
+      },
+      Diagnostic_procedure: {
+        light: "#FFD699", // Lighter shade of orange
+        dark: "#FF9900", // Darker shade of orange
+      },
+      Lab_value: {
+        light: "#99D6FF", // Lighter shade of blue
+        dark: "#006699", // Darker shade of blue
+      },
+      Distance: {
+        light: "#E0E0E0", // Lighter shade of gray
+        dark: "#808080", // Darker shade of gray
+      },
+      Coreference:{
+        light: "#66FFFF", // Lighter shade of aqua
+        dark: "#009999",
+      },
+      Clinical_event: {
+        light: "#66FFFF", // Lighter shade of aqua
+        dark: "#009999", // Darker shade of aqua
+      },
+      Sign_symptom: {
+        light: "#B3C6FF", // Lighter shade of blue
+        dark: "#4364A4", // Darker shade of blue
+      },
+      Biological_structure: {
+        light: "#C2FFC2", // Lighter shade of green
+        dark: "#2E8B57", // Darker shade of green
+      },
+      Frequency: {
+        light: "#FF9999", // Lighter shade of red
+        dark: "#B22222", // Darker shade of red
+      },
+      Sex: {
+        light: "#A7FFA7", // Lighter shade of green
+        dark: "#287C28", // Darker shade of green
+      },
+      Therapeutic_procedure: {
+        light: "#D6FF99", // Lighter shade of olive
+        dark: "#698B22", // Darker shade of olive
+      },
+    };
+  
+    // Check if the entity_group exists in the colors object
+    if (entity_group in colors) {
+      return colors[entity_group];
+    } else {
+      return { light: "yellow", dark: "darkyellow" }; // Default color
+    }
+  };
+  
+  
+
+  const outputList = output.map((result, index) => {
+    const highlightedText = [];
+    let lastIndex = 0;
+    console.log(result.length);
+    console.log(inputs);
+    for (let i = 0; i < result.length; i++) {
+      const { start, end, score, entity_group } = result[i];
+      console.log(result[i]);
+      const entityChunkColor = getEntityColor(entity_group).light;
+      const entityNameColor = getEntityColor(entity_group).dark;
+      const textChunk = inputs.substring(lastIndex, start);
+      console.log(textChunk);
+      const entityChunk = inputs.substring(start, end);
+      console.log(entityChunk);
+      if (textChunk) {
+        highlightedText.push(<span key={lastIndex}>{textChunk}</span>);
+      }
+
+      highlightedText.push(
+        <span
+          key={start + "-" + end}
+          style={{
+            color: "black",
+            fontSize: score >= 0.5 && entity_group ? "110%" : "100%",
+            backgroundColor: score >= 0.5 ? entityNameColor : "transparent",
+            marginRight: "5px",
+            borderRadius: "5px",
+          }}
+        >
+          <b style={{backgroundColor: score >= 0.5 ? entityChunkColor : "transparent",}}>{entityChunk}</b> <b style={{color: score <0.5 ? "black" : "white",z:"10", fontSize: score<0.5 ? "0%" : "70%"}}>{entity_group} </b>
+        </span>
+      );
+      lastIndex = end;
+    }
+
+    if (lastIndex < intext.length) {
+      highlightedText.push(
+        <span key={lastIndex}>{intext.substring(lastIndex)}</span>
+      );
+    }
+
+    console.log(highlightedText);
+
+    return (
+      <div key={index}>
+        <p>{highlightedText}</p>
+      </div>
+    );
+  });
+
   return (
-    <div className='overflow-hidden'>
+    <div className="overflow-hidden">
       <Navbar />
-      <div className='w-[100vw] md:mx-[30px] flex flex-col flex-wrap items-center justify-center lg:flex-row md:p-[5%]'>
-        <div className='flex-[6] md:w-[100%] h-[100%] flex flex-col flex-wrap justify-between'>
-          <div className='h-[60%] m-0 p-[10px] md:p-0 flex-1 flex flex-col'>
-            <h2 className='text-[#FFC727] text-[40px] md:text-[48px] lg:text-[60px] font-[700]'>Get Name Entity Recognition</h2>
-            <p className='text-[20px] font-[300] mt-5'>get transcription report of recent recorded/uploaded input document.</p>
+      <div className="w-[100vw] md:mx-[30px] flex flex-col flex-wrap items-center justify-center lg:flex-row md:p-[5%]">
+        <div className="flex-[6] md:w-[100%] h-[100%] flex flex-col flex-wrap justify-between">
+          <div className="h-[60%] m-0 p-[10px] md:p-0 flex-1 flex flex-col">
+            <h2 className="text-[#FFC727] text-[40px] md:text-[48px] lg:text-[60px] font-[700]">
+              Get Name Entity Recognition
+            </h2>
+            <p className="text-[20px] font-[300] mt-5">
+              get transcription report of recent recorded/uploaded inputs
+              document.
+            </p>
           </div>
-          <div className='flex-1 mt-12 justify-center items-center text-[22px] font-[Roboto] font-[700] flex flex-col md:flex-row md:justify-start'>
-            <button className='w-[242px] h-[44px] shrink-0 justify-center mt-2 sm:mt-0 rounded-[6px] bg-white text-[#6A6868] border-2 border-[#6A6868]' type="submit">
-              <p onClick={scrollToTarget} className='font-[Roboto] font-[700] flex flex-row justify-evenly items-center'>
+          <div className="flex-1 mt-12 justify-center items-center text-[22px] font-[Roboto] font-[700] flex flex-col md:flex-row md:justify-start">
+            <button
+              className="w-[242px] h-[44px] shrink-0 justify-center mt-2 sm:mt-0 rounded-[6px] bg-white text-[#6A6868] border-2 border-[#6A6868]"
+              type="submit"
+            >
+              <p
+                onClick={scrollToTarget}
+                className="font-[Roboto] font-[700] flex flex-row justify-evenly items-center"
+              >
                 <div>Transcription Report</div>
-                <div><img src={vector_down} alt="" /></div>
+                <div>
+                  <img src={vector_down} alt="" />
+                </div>
               </p>
             </button>
           </div>
         </div>
-        <div className='flex-[4] flex justify-center shrink-0'>
-          <div><img width={"632px"} height={"632px"} src={audit} alt="" /></div>
+        <div className="flex-[4] flex justify-center shrink-0">
+          <div>
+            <img width={"632px"} height={"632px"} src={audit} alt="" />
+          </div>
         </div>
       </div>
       <hr style={{ height: "3px", backgroundColor: "black" }} />
-      <div className='flex items-center justify-center text-[40px] p-5 md:text-[56px] font-[700] font-[Roboto] mt-5 sm:mt-12 text-[#555555]'>
+      <div className="flex items-center justify-center text-[40px] p-5 md:text-[56px] font-[700] font-[Roboto] mt-5 sm:mt-12 text-[#555555]">
         <h1>Here’s the transcription report</h1>
       </div>
-      <div ref={targetRef} className='flex justify-center flex-col py-[30px] sm:py-[80px] p-5 md:p-[100px] lg:flex-row'>
-        <div className='flex-[5] border-2 w-auto h-auto flex justify-center lg:w-[680px] lg:h-[651px] shrink-0 shadow-md p-3 md:text-[19px] font-[Roboto] font-[300]'>
-          <p className='text-justify'>
-            Generated text will be displayed here Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
-            The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.
-          </p>
+      <div
+        ref={targetRef}
+        className="flex justify-center flex-col py-[30px] sm:py-[80px] p-5 md:p-[100px] lg:flex-row"
+      >
+        <div className="flex-[5] border-2 w-auto h-auto flex justify-center lg:w-[680px] lg:h-auto lg:h-max-[680px]  shrink-0 shadow-md p-3 md:text-[19px] font-[Roboto] font-[300]">
+          <p className="w-full text-justify overflow-scroll">{outputList}</p>
         </div>
       </div>
-      <div className='my-8 justify-center items-center text-[22px] font-[Roboto] font-[700] flex flex-col sm:flex-row '>
-        <button className='w-[197px] h-[44px] shrink-0 justify-center bg-[#6A6868] rounded-[6px] text-white' type="submit">
-          <p className='font-[Roboto] font-[700]'>Download pdf</p>
+      <div className="my-8 justify-center items-center text-[22px] font-[Roboto] font-[700] flex flex-col sm:flex-row ">
+        <button
+          className="w-[197px] h-[44px] shrink-0 justify-center bg-[#6A6868] rounded-[6px] text-white"
+          type="submit"
+        >
+          <p className="font-[Roboto] font-[700]">Download pdf</p>
         </button>
-        <button className='w-[197px] h-[44px] shrink-0 justify-center mt-2 sm:mt-0 rounded-[6px] bg-white text-[#6A6868] sm:ml-[45px] border-2 border-[#6A6868]' type="submit">
-          <p className='font-[Roboto] font-[700] flex flex-row justify-evenly items-center'>
+        <button
+          className="w-[197px] h-[44px] shrink-0 justify-center mt-2 sm:mt-0 rounded-[6px] bg-white text-[#6A6868] sm:ml-[45px] border-2 border-[#6A6868]"
+          type="submit"
+        >
+          <p className="font-[Roboto] font-[700] flex flex-row justify-evenly items-center">
             <div>Send pdf</div>
-            <div><img src={vector_send} alt="" /></div>
+            <div>
+              <img src={vector_send} alt="" />
+            </div>
           </p>
         </button>
       </div>
