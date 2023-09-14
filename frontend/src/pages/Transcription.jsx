@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import axios from "axios"; // Import Axios library
 import { audit, vector_down, vector_send } from "../assets";
 import { Footer, Navbar } from "../components";
+import { PDFDocument, rgb } from "pdf-lib";
 
 export default function Transcription() {
   const targetRef = useRef(null);
@@ -24,24 +25,27 @@ export default function Transcription() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("https://medibackend.onrender.com/api/text/get");
+        const response = await axios.get(
+          "https://medibackend.onrender.com/api/text/get"
+        );
         setInput(response.data.text_data);
         const postResponse = await fetch(
           "https://api-inference.huggingface.co/models/d4data/biomedical-ner-all",
           {
             method: "POST",
             headers: {
-              Authorization: "Bearer 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",
+              Authorization:
+                "Bearer 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",
               "Content-Type": "application/json", // Specify the content type
             },
             body: JSON.stringify(response.data.text_data),
           }
         );
-  
+
         if (!postResponse.ok) {
           throw new Error("Failed to fetch data from Hugging Face API");
         }
-  
+
         setInputArray((prevInputArray) => [...prevInputArray, inputs]);
         const result = await postResponse.json();
         console.log("api hit request");
@@ -50,7 +54,6 @@ export default function Transcription() {
         for (let i = 0; i < result.length; i++) {
           console.log(result[i].word, result[i].score, result[i].entity_group);
         }
-  
       } catch (error) {
         console.error("Error:", error);
       }
@@ -58,7 +61,6 @@ export default function Transcription() {
 
     fetchData();
   }, []);
-  
 
   const getEntityColor = (entity_group) => {
     const colors = {
@@ -94,7 +96,7 @@ export default function Transcription() {
         light: "#E0E0E0", // Lighter shade of gray
         dark: "#808080", // Darker shade of gray
       },
-      Coreference:{
+      Coreference: {
         light: "#66FFFF", // Lighter shade of aqua
         dark: "#009999",
       },
@@ -123,7 +125,7 @@ export default function Transcription() {
         dark: "#698B22", // Darker shade of olive
       },
     };
-  
+
     // Check if the entity_group exists in the colors object
     if (entity_group in colors) {
       return colors[entity_group];
@@ -131,8 +133,6 @@ export default function Transcription() {
       return { light: "yellow", dark: "darkyellow" }; // Default color
     }
   };
-  
-  
 
   const outputList = output.map((result, index) => {
     const highlightedText = [];
@@ -163,7 +163,22 @@ export default function Transcription() {
             borderRadius: "5px",
           }}
         >
-          <b style={{backgroundColor: score >= 0.5 ? entityChunkColor : "transparent",}}>{entityChunk}</b> <b style={{color: score <0.5 ? "black" : "white",z:"10", fontSize: score<0.5 ? "0%" : "70%"}}>{entity_group} </b>
+          <b
+            style={{
+              backgroundColor: score >= 0.5 ? entityChunkColor : "transparent",
+            }}
+          >
+            {entityChunk}
+          </b>{" "}
+          <b
+            style={{
+              color: score < 0.5 ? "black" : "white",
+              z: "10",
+              fontSize: score < 0.5 ? "0%" : "70%",
+            }}
+          >
+            {entity_group}{" "}
+          </b>
         </span>
       );
       lastIndex = end;
@@ -183,6 +198,34 @@ export default function Transcription() {
       </div>
     );
   });
+
+  // Define a function to generate and download the PDF
+  const generateAndDownloadPdf = async () => {
+    // Create a new PDF document
+    const pdfDoc = await PDFDocument.create();
+    const page = pdfDoc.addPage([600, 400]);
+
+    // Add the text from the outputList
+    const text = "Your data goes here"; // Replace with your actual data
+    page.drawText(text, {
+      x: 50,
+      y: 350,
+      size: 30,
+      color: rgb(0, 0, 0), // Black color
+    });
+
+    // Serialize the PDF to bytes
+    const pdfBytes = await pdfDoc.save();
+
+    // Create a Blob from the bytes
+    const pdfBlob = new Blob([pdfBytes], { type: "application/pdf" });
+
+    // Create a temporary download link and trigger the download
+    const link = document.createElement("a");
+    link.href = window.URL.createObjectURL(pdfBlob);
+    link.download = "output.pdf"; // Set the desired file name
+    link.click();
+  };
 
   return (
     <div className="overflow-hidden">
@@ -236,7 +279,8 @@ export default function Transcription() {
       <div className="my-8 justify-center items-center text-[22px] font-[Roboto] font-[700] flex flex-col sm:flex-row ">
         <button
           className="w-[197px] h-[44px] shrink-0 justify-center bg-[#6A6868] rounded-[6px] text-white"
-          type="submit"
+          type="button"
+          onClick={generateAndDownloadPdf}
         >
           <p className="font-[Roboto] font-[700]">Download pdf</p>
         </button>

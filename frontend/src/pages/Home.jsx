@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {Footer, Navbar} from "../components"
+import { Footer, Navbar } from "../components";
 import {
   vector_right,
   landingPage_main_image,
@@ -65,12 +65,12 @@ export default function LandingPage() {
             <p className="text-[24px] md:text-[27px] text-[#453c1b] font-[900]">MediXtrans</p>
           </div> */}
           <div>
-            <p className="text-[24px] md:text-[40px] font-[900]">
+            <p className="text-[34px] font-Roboto md:text-[40px] font-[900] tracking-[6%]">
               Transcription that is Accurate
             </p>
           </div>
           <div>
-            <p className="text-[20px] md:text-[30px] text-justify text-[#6A6868] font-[500] font-[Poppins] flex ">
+            <p className="text-[20px] md:text-[30px] text-justify text-[#6A6868] font-[500] font-Poppins flex ">
               Affordable and effective medical Transcription tool for doctors
               and nurses supporting multiple languages
             </p>
@@ -98,21 +98,38 @@ export default function LandingPage() {
           </div> */}
         </div>
       </div>
-      <div className='w-[100vw] lg:w[98vw] flex my-10 justify-center lg:justify-evenly' id="started">
-        <div className='w-[80vw] sm:h-[60vh] flex flex-col justify-center lg:ml-[60px] gap-8'>
-            <p className='text-[27px] text-[#6A6868] font-[900]'>What is MediXtranS?</p>
-            <p className='text-[16px] md:text-[27px] text-[#1E1E1E] font-[300] text-justify'>Medical transcription is the process of converting spoken medical dictations into written format, ensuring accurate and detailed documentation of patient encounters. We provide medical reports, including patient histories, diagnoses, treatment plans, and other relevant information. These reports serve as crucial records for healthcare providers, facilitating communication, continuity of care, and billing processes.</p>
+      <div
+        className="w-[100vw] lg:w[98vw] flex my-10 justify-center lg:justify-evenly"
+        id="started"
+      >
+        <div className="w-[80vw] sm:h-[60vh] flex flex-col justify-center lg:ml-[60px] gap-8">
+          <p className="text-[27px] text-[#6A6868] font-[900]">
+            What is MediXtranS?
+          </p>
+          <p className="text-[16px] md:text-[27px] text-[#1E1E1E] font-[300] text-justify">
+            Medical transcription is the process of converting spoken medical
+            dictations into written format, ensuring accurate and detailed
+            documentation of patient encounters. We provide medical reports,
+            including patient histories, diagnoses, treatment plans, and other
+            relevant information. These reports serve as crucial records for
+            healthcare providers, facilitating communication, continuity of
+            care, and billing processes.
+          </p>
         </div>
-        <div className='absolute flex md:block  right-[10vw]'>
-        <img src={mediXlogo_4} alt="" className='r-0'/>
+        <div className="absolute flex md:block  right-[10vw]">
+          <img src={mediXlogo_4} alt="" className="r-0" />
         </div>
       </div>
-      <div className='border-[1px] border-black'></div>
-      <div className='w-full my-10'>
-        <p className='left-[30%] p-10 text-[27px] text-[#6A6868] font-[900]'>Explore Our Features</p>
-        <div className='flex flex-wrap justify-evenly'><Card /></div>
+      <div className="border-[1px] border-black"></div>
+      <div className="w-full my-10">
+        <p className="left-[30%] p-10 text-[27px] text-[#6A6868] font-[900]">
+          Explore Our Features
+        </p>
+        <div className="flex flex-wrap justify-evenly">
+          <Card />
+        </div>
       </div>
-        <div className='border-[1px] border-black'></div>
+      <div className="border-[1px] border-black"></div>
       <div className="w-full p-[40px] mb-10">
         <span>
           <p className="text-[#6A6868] my-[20px] text-[20px] md:text-[27px] font-[900]">
@@ -123,7 +140,9 @@ export default function LandingPage() {
           return (
             <span className="flex gap-5 mt-2">
               <img src={Mask_group} alt="" />
-              <p className="text-[#1E1E1E] text-[12px] md:text-[20px] font-[300]">{item}</p>
+              <p className="text-[#1E1E1E] text-[12px] md:text-[20px] font-[300]">
+                {item}
+              </p>
             </span>
           );
         })}
