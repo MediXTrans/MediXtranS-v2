@@ -3,6 +3,7 @@ import axios from "axios"; // Import Axios library
 import { audit, vector_down, vector_send } from "../assets";
 import { Footer, Navbar } from "../components";
 import { PDFDocument, rgb } from "pdf-lib";
+import { Outlet } from "react-router-dom";
 
 export default function Transcription() {
   const targetRef = useRef(null);
@@ -48,11 +49,11 @@ export default function Transcription() {
 
         setInputArray((prevInputArray) => [...prevInputArray, inputs]);
         const result = await postResponse.json();
-        console.log("api hit request");
-        console.log(result);
+        // console.log("api hit request");
+        // console.log(result);
         setOutput((prevOutput) => [result]);
         for (let i = 0; i < result.length; i++) {
-          console.log(result[i].word, result[i].score, result[i].entity_group);
+          // console.log(result[i].word, result[i].score, result[i].entity_group);
         }
       } catch (error) {
         console.error("Error:", error);
@@ -137,17 +138,17 @@ export default function Transcription() {
   const outputList = output.map((result, index) => {
     const highlightedText = [];
     let lastIndex = 0;
-    console.log(result.length);
-    console.log(inputs);
+    // console.log(result.length);
+    // console.log(inputs);
     for (let i = 0; i < result.length; i++) {
       const { start, end, score, entity_group } = result[i];
-      console.log(result[i]);
+      // console.log(result[i]);
       const entityChunkColor = getEntityColor(entity_group).light;
       const entityNameColor = getEntityColor(entity_group).dark;
       const textChunk = inputs.substring(lastIndex, start);
-      console.log(textChunk);
+      // console.log(textChunk);
       const entityChunk = inputs.substring(start, end);
-      console.log(entityChunk);
+      // console.log(entityChunk);
       if (textChunk) {
         highlightedText.push(<span key={lastIndex}>{textChunk}</span>);
       }
@@ -190,7 +191,7 @@ export default function Transcription() {
       );
     }
 
-    console.log(highlightedText);
+    // console.log(highlightedText);
 
     return (
       <div key={index}>
@@ -199,32 +200,113 @@ export default function Transcription() {
     );
   });
 
+  // Function to convert React elements to plain text
+  function convertReactElementsToText(reactElements) {
+    return reactElements
+      .map((element) => {
+        if (typeof element === "string") {
+          return element; // If it's a string, keep it as is
+        } else if (React.isValidElement(element)) {
+          // If it's a React element, extract the text content
+          return convertReactElementsToText(
+            React.Children.toArray(element.props.children)
+          );
+        }
+        return "";
+      })
+      .join("");
+  }
+
+  // Create plain text from the outputList
+  // console.log(outputList);
+  const textToConvert = convertReactElementsToText(outputList);
+  // console.log("text to convert",textToConvert);
+  // console.log(typeof textToConvert);
+
+  // Now, you can use the textToConvert to create the PDF
+  // Follow the previous code for generating and downloading the PDF
+
   // Define a function to generate and download the PDF
+
   const generateAndDownloadPdf = async () => {
-    // Create a new PDF document
-    const pdfDoc = await PDFDocument.create();
-    const page = pdfDoc.addPage([600, 400]);
+    try {
+      // Create a new PDF document
+      const pdfDoc = await PDFDocument.create();
+      // const initialPage = pdfDoc.addPage([800, 600]); // Adjust dimensions as needed
+      const fontSize = 10;
+      // const maxWidth = initialPage.getWidth() - 100; // Adjust as needed
+      // const lineHeight = 1.2 * fontSize; // Line height as a multiple of font size
+      // const margin = 50; // Margin from page edges
 
-    // Add the text from the outputList
-    const text = "Your data goes here"; // Replace with your actual data
-    page.drawText(text, {
-      x: 50,
-      y: 350,
-      size: 30,
-      color: rgb(0, 0, 0), // Black color
-    });
+      // Function to add a new page with the same dimensions
+      const addNewPage = () => {
+        const newPage = pdfDoc.addPage([800, 600]); // Adjust dimensions as needed
+        return newPage;
+      };
 
-    // Serialize the PDF to bytes
-    const pdfBytes = await pdfDoc.save();
+      // Function to wrap and draw text on a page
+      const drawWrappedText = (page, text) => {
+        const maxWidth = page.getWidth() - 100;
+        const margin = 50;
+        const lineHeight = 40;
+        let y = page.getHeight() - 50;
+        const words = text.split(" ");
+        let currentLine = "";
 
-    // Create a Blob from the bytes
-    const pdfBlob = new Blob([pdfBytes], { type: "application/pdf" });
+        for (const word of words) {
+          const currentText = currentLine ? `${currentLine} ${word}` : word;
+          const width = currentText.length * (fontSize / 2); // Adjust as needed
 
-    // Create a temporary download link and trigger the download
-    const link = document.createElement("a");
-    link.href = window.URL.createObjectURL(pdfBlob);
-    link.download = "output.pdf"; // Set the desired file name
-    link.click();
+          if (width <= maxWidth) {
+            if (currentLine) currentLine += ` ${word}`;
+            else currentLine = word;
+          } else {
+            page.drawText(currentLine, {
+              x: margin,
+              y,
+              size: fontSize,
+              color: rgb(0, 0, 0),
+            });
+            y -= lineHeight;
+            currentLine = word;
+          }
+        }
+
+        // Draw the last line
+        if (currentLine) {
+          page.drawText(currentLine, {
+            x: margin,
+            y,
+            size: fontSize,
+            color: rgb(0, 0, 0),
+          });
+        }
+      };
+
+      // Split text into paragraphs if needed
+      const paragraphs = textToConvert.split("\n");
+      let page = addNewPage();
+      for (const paragraph of paragraphs) {
+        if (page.getHeight() <= 100) {
+          page = addNewPage(); // Start a new page when current page is full
+        }
+        drawWrappedText(page, paragraph);
+      }
+
+      // Serialize the PDF to bytes
+      const pdfBytes = await pdfDoc.save();
+
+      // Create a Blob from the bytes
+      const pdfBlob = new Blob([pdfBytes], { type: "application/pdf" });
+
+      // Create a temporary download link and trigger the download
+      const link = document.createElement("a");
+      link.href = window.URL.createObjectURL(pdfBlob);
+      link.download = "transcription.pdf"; // Set the desired file name
+      link.click();
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+    }
   };
 
   return (
