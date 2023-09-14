@@ -1,14 +1,14 @@
-import React, { useState, useEffect, useRef} from "react";
-import { vector_right, microphone, voice_assignment_1 } from '../assets';
-import {Footer} from "../components";
-import { Navbar } from '../components';
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from "react";
+import { vector_right, microphone, voice_assignment_1 } from "../assets";
+import { Footer } from "../components";
+import { Navbar } from "../components";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { server } from "../App";
 
 export default function Record() {
-  const isLoggedIn = useSelector(state=>state.auth.isLoggedIn);
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const navigate = useNavigate();
   // useEffect(() =>{
   //   if(!isLoggedIn){
@@ -19,8 +19,8 @@ export default function Record() {
   const targetRef = useRef(null);
   const scrollToTarget = () => {
     targetRef.current.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start',
+      behavior: "smooth",
+      block: "start",
     });
   };
 
@@ -40,7 +40,7 @@ export default function Record() {
         .map((result) => result[0].transcript)
         .join("");
 
-      setText(text+' '+transcript);
+      setText(text + " " + transcript);
     };
 
     recognition.onend = () => {
@@ -65,6 +65,7 @@ export default function Record() {
 
   const handleStart = () => {
     setIsRecording(true);
+    recognition.abort(); // Abort any ongoing recognition (if any)
     recognition.start();
   };
 
@@ -80,7 +81,8 @@ export default function Record() {
         `${server}/api/text/generate`,
         // `${server}/Text_API/post_api_generateText`,
         {
-           patientid:patientid,text_data: text 
+          patientid: patientid,
+          text_data: text,
         },
         {
           headers: {
@@ -90,14 +92,13 @@ export default function Record() {
         }
       );
       console.log("data send successfully");
-      console.log(patientid+"  "+text);
-     setSubmitted(true);
-     navigate("../transcription");
-    }
-    catch (error) {
+      console.log(patientid + "  " + text);
+      setSubmitted(true);
+      navigate("../transcription");
+    } catch (error) {
       console.log(error);
     }
-  }
+  };
   if (submitted) {
     return navigate("./transcription");
   }
@@ -126,7 +127,7 @@ export default function Record() {
             <button
               className="w-[197px] h-[44px] shrink-0 justify-center mt-2 sm:mt-0 rounded-[6px] bg-white text-[#6A6868] md:ml-[45px] border-2 border-[#6A6868]"
               type="submit"
-              onClick={()=>navigate("../upload")}
+              onClick={() => navigate("../upload")}
             >
               <p className="font-[Roboto] font-[700] flex flex-row justify-evenly items-center">
                 <div>Upload file</div>
