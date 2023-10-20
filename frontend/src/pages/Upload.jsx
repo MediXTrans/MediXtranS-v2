@@ -10,10 +10,33 @@ import { useNavigate } from 'react-router-dom';
 
 export default function Upload() {
   const [selectedFile, setSelectedFile] = useState(null);
+  const [text, setText] = useState("");
   const navigate = useNavigate();
 
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
+  };
+
+  const uploadEventHandler = async (event) => {
+    event.preventDefault();
+    const file = selectedFile;
+    const reader = new FileReader();
+
+    reader.onload = async (event) => {
+      const fileData = event.target.result;
+      const response = await fetch(
+        "https://api-inference.huggingface.co/models/rakesh-ai/whisper-small-en",
+        {
+          headers: { Authorization: "Bearer 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" },
+          method: "POST",
+          body: fileData,
+        });
+      
+      const result = await response.json();
+      console.log(result);
+      setText(result.text);
+    };
+    reader.readAsArrayBuffer(file);
   };
 
   const handleTranscription = () => {
@@ -52,19 +75,37 @@ export default function Upload() {
                   onChange={handleFileChange}
                 />
               </button>
+              <button
+                className="w-[197px] h-[44px] shrink-0 justify-center mt-2 sm:mt-0 ml-10 rounded-[6px] bg-white text-[#6A6868] md:ml-[200px] border-2 border-[#6A6868]"
+                type="submit"
+                onClick={uploadEventHandler}
+              >
+                Generate Text
+              </button>
             </div>
-            <div className="flex-1 mt-12 justify-between items-around text-[22px] font-[Roboto] font-[700] flex flex-col sm:flex-row sm:justify-start">
+
+            <div className="flex-[5] hover:border-white border-2 w-auto h-auto flex justify-center lg: mt-[10px] w-[680px] lg:h-[651px] shrink-0 shadow-md p-3 md:mt-[10px] text-[19px] font-[Roboto] font-[300]">
+              <textarea
+                value={text}
+                rows={10}
+                cols={100}
+                placeholder="audio file will be converted to text here"
+                onChange={(e) => setText(e.target.value)}
+              />
+            </div>
+
+            <div className="flex-1 mt-5 justify-between items-around text-[22px] font-[Roboto] font-[700] flex flex-col sm:flex-row sm:justify-start">
               <button
                 className="w-[197px] h-[44px] shrink-0 justify-center sm:mt-0 rounded-[6px] bg-white text-[#6A6868] border-2 border-[#6A6868]"
                 type="submit"
                 onClick={handleTranscription}
               >
-                <p className="font-[Roboto] font-[700] flex flex-row justify-evenly items-center">
-                  <div >Transcribe</div>
+                <span className="font-[Roboto] font-[700] flex flex-row justify-evenly items-center">
+                  <div>Transcribe</div>
                   <div>
                     <img src={vector_right} alt="" />
                   </div>
-                </p>
+                </span>
               </button>
             </div>
           </div>
