@@ -1,9 +1,25 @@
-import React from "react";
+import {Reac,useEffect, useState} from "react";
 import "./generateForm.css"
 export default function GenerateForm  ({ resultData }) {
-  console.log("this is result data");
-  console.log(resultData);
   // Use resultData to render the form content
+  var [Age, setAge] = useState(null);
+  var [Sex, setSex] = useState(null);
+  var [CE, setCE] = useState(null);
+  var [BS, setBS] = useState(null);
+  var [SS, setSS] = useState(null);
+  Age = localStorage.getItem("medixTransGenerateFormAge");
+    Sex = localStorage.getItem("medixTransGenerateFormSex");
+    BS = localStorage.getItem("medixTransGenerateFormBS");
+    CE = localStorage.getItem("medixTransGenerateFormCE");
+    SS = localStorage.getItem("medixTransGenerateFormSS");
+  // useEffect(() => {
+    
+  //   console.log(CE);
+  //   console.log(Sex);
+  //   console.log(BS);
+  //   console.log(Age);
+  //   console.log(SS);
+  // },[]);
   return (
     <>
     <div className="notes-form-section">
@@ -37,7 +53,7 @@ export default function GenerateForm  ({ resultData }) {
                   <input
                     type="text"
                     name="branch"
-                    // value={notesDetails.branch}
+                    value={Age}
                     // onChange={handleTextChange}
                   ></input>
                 </div>
@@ -48,7 +64,7 @@ export default function GenerateForm  ({ resultData }) {
                   <input
                     type="text"
                     name="college"
-                    // value={notesDetails.college}
+                    value={Sex}
                     // onChange={handleTextChange}
                   ></input>
                 </div>
@@ -56,12 +72,12 @@ export default function GenerateForm  ({ resultData }) {
 
               <div className="notes-form-classInput">
                 <div className="notes-form-input-labels">
-                  <label className="notes-form-classlabel">Patient History<span style={{ color: "red" }}>*</span></label>
+                  <label className="notes-form-classlabel">Biological_structure<span style={{ color: "red" }}>*</span></label>
                 </div>
                 <input
                   type="text"
                   name="courseName"
-                  // value={notesDetails.courseName}
+                  value={BS}
                   // onChange={handleTextChange}
                 ></input>
               </div>
@@ -73,7 +89,7 @@ export default function GenerateForm  ({ resultData }) {
                 <input
                   type="text"
                   name="resourceLink"
-                  // value={notesDetails.resourceLink}
+                  value={CE}
                   // onChange={handleTextChange}
                 ></input>
               </div>
@@ -84,7 +100,7 @@ export default function GenerateForm  ({ resultData }) {
                 <input
                   type="text"
                   name="resourceLink"
-                  // value={notesDetails.thumbnailUrl}
+                  value={SS}
                   // onChange={handleTextChange}
                 ></input>
               </div>
