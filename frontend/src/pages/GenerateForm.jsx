@@ -1,7 +1,26 @@
 import {Reac,useEffect, useState} from "react";
 import "./generateForm.css"
 export default function GenerateForm  ({ resultData }) {
-  // Use resultData to render the form content
+import React, { useRef } from "react";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
+import "./generateForm.css";
+  
+  const formRef = useRef(null);
+  const handleDownload = () => {
+    const input = formRef.current;
+
+    const pdfWidth = input.offsetWidth * 1.5; // Increase the width by a factor, adjust as needed
+    const pdfHeight = input.offsetHeight; // Get the height of the content
+
+    html2canvas(input, { scale: 2 }).then((canvas) => {
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("l", "px", [pdfWidth, pdfHeight]); // Set orientation to landscape ("l") and specify width and height
+      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+      pdf.save("form.pdf");
+    });
+  };
+
   var [Age, setAge] = useState(null);
   var [Sex, setSex] = useState(null);
   var [CE, setCE] = useState(null);
@@ -12,17 +31,10 @@ export default function GenerateForm  ({ resultData }) {
     BS = localStorage.getItem("medixTransGenerateFormBS");
     CE = localStorage.getItem("medixTransGenerateFormCE");
     SS = localStorage.getItem("medixTransGenerateFormSS");
-  // useEffect(() => {
-    
-  //   console.log(CE);
-  //   console.log(Sex);
-  //   console.log(BS);
-  //   console.log(Age);
-  //   console.log(SS);
-  // },[]);
+
   return (
     <>
-    <div className="notes-form-section">
+    <div className="notes-form-section" ref={formRef}>
     <div className="container">
         <div className="notes-form-main-navbar">
           <div className="notes-form-heading">Create/Edit Patient Details</div>
@@ -39,8 +51,6 @@ export default function GenerateForm  ({ resultData }) {
                 <input
                   type="text"
                   name="name"
-                  // value={notesDetails.name}
-                  // onChange={handleTextChange}
                   required
                 ></input>
               </div>
@@ -54,7 +64,6 @@ export default function GenerateForm  ({ resultData }) {
                     type="text"
                     name="branch"
                     value={Age}
-                    // onChange={handleTextChange}
                   ></input>
                 </div>
                 <div className="horizonclassInput">
@@ -65,7 +74,6 @@ export default function GenerateForm  ({ resultData }) {
                     type="text"
                     name="college"
                     value={Sex}
-                    // onChange={handleTextChange}
                   ></input>
                 </div>
               </div>
@@ -78,7 +86,6 @@ export default function GenerateForm  ({ resultData }) {
                   type="text"
                   name="courseName"
                   value={BS}
-                  // onChange={handleTextChange}
                 ></input>
               </div>
 
@@ -101,7 +108,6 @@ export default function GenerateForm  ({ resultData }) {
                   type="text"
                   name="resourceLink"
                   value={SS}
-                  // onChange={handleTextChange}
                 ></input>
               </div>
 
@@ -112,18 +118,11 @@ export default function GenerateForm  ({ resultData }) {
                 <textarea
                   type="text"
                   name="description"
-                  // value={notesDetails.description}
-                  // onChange={handleTextChange}
                 ></textarea>
               </div>
               <div className="btn_container">
-                <button className="uploadBtn">Download Form</button>
+                <button className="uploadBtn" onClick={handleDownload}>Download Form</button>
               </div>
-
-              {/* <div className="btn_container">
-                <button className="uploadBtn" onClick={handleSubmit} disabled={disable}> Create/Edit </button>
-                <button className="cancleBtn" onClick={() => setUpdateNotesDrawer(false)}>Cancel</button>
-              </div> */}
             </div>
           </div>
         </div>
@@ -131,4 +130,4 @@ export default function GenerateForm  ({ resultData }) {
     </div>
     </>
   );
-};
+}
