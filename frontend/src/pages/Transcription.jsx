@@ -57,10 +57,27 @@ export default function Transcription() {
         console.log("api hit request");
         console.log(result);
         // transResult = result;
-        console.log(transResult);
+        // console.log(transResult);
         setOutput((prevOutput) => [result]);
         for (let i = 0; i < result.length; i++) {
-          transResult.push(result[i]);
+          const { word, entity_group } = result[i];
+          console.log(entity_group);
+          if(entity_group === "Age") {
+            localStorage.setItem("medixTransGenerateFormAge",word);
+          }
+          if(entity_group == "Sex"){
+            localStorage.setItem("medixTransGenerateFormSex",word);
+          }
+          if(entity_group == "Biological_structure"){
+            localStorage.setItem("medixTransGenerateFormBS",word);
+          }
+          if(entity_group == "Clinical_event"){
+            localStorage.setItem("medixTransGenerateFormCE",word);
+          }
+          if(entity_group == "Sign_symptom"){
+            localStorage.setItem("medixTransGenerateFormSS",word);
+          }
+          
           // console.log(result[i].word, result[i].score, result[i].entity_group);
         }
       } catch (error) {
@@ -72,9 +89,28 @@ export default function Transcription() {
   }, []);
   console.log(transResult);
 
+  
 
-  const handleGenerateFormClick = () => {
-    console.log(transResult);
+  const handleGenerateFormClick = async() => {
+    // console.log(transResult[0].entity_group);
+
+    // await fun();
+    // for(let i=0; i<transResult.length; i++) {
+    //   const { start, end, score, entity_group } = result[i];
+    //   console.log(entity_group)
+    //   // console.log(transResult[i].entity_group)
+    //   // if(transResult[i].entity_group == "Age") {
+    //   //   localStorage.setItem("medixTransGenerateFormAge",transResult[i].word);
+    //   // }
+    //   // else if(transResult[i].entity_group === "Disease_disorder") {
+    //   //   localStorage.setItem("medixTransGenerateFormDisease_disorder",transResult[i].word);
+    //   // }
+    // }
+    // localStorage.setItem("medixTransGenerateForm",transResult[0].entity_group);
+    // localStorage.setItem("medixTransGenerateForm",transResult[0].);
+    // localStorage.setItem("medixTransGenerateForm",transResult[0]);
+    // localStorage.setItem("medixTransGenerateForm",transResult[0]);
+    // localStorage.setItem("medixTransGenerateForm",transResult[0]);
     navigate("/generateForm", { state: { resultData: transResult } });
   };
 
