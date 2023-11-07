@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import {
   vector_right,
   mediXtransFlow1,
@@ -6,17 +8,26 @@ import {
   Os_upgrade_2,
 } from "../assets";
 import { Footer, Navbar } from "../components";
-import { useNavigate } from 'react-router-dom';
+import { server } from "../App";
 
 export default function Upload() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [text, setText] = useState("");
+  const [result, setResult] = useState(null); 
+  const [submitted, setSubmitted] = useState(false);
   const navigate = useNavigate();
+
+  // useEffect(() => {
+  //   // useEffect to handle result changes and trigger handleSubmit
+  //   if (result) {
+  //     handleSubmit();
+  //   }
+  // }, [result]);
 
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
   };
-
+  
   const uploadEventHandler = async (event) => {
     event.preventDefault();
     const file = selectedFile;
@@ -32,23 +43,53 @@ export default function Upload() {
           body: fileData,
         });
       
-      const result = await response.json();
-      console.log(result);
-      setText(result.text);
+      const resultData = await response.json();
+      // console.log("Result from Upload function: " + result.text);
+      // console.log(result);
+      setText(resultData.text);
+      setResult(resultData.text);
+      // console.log(result);
     };
     reader.readAsArrayBuffer(file);
   };
 
-  const handleTranscription = () => {
-    if(selectedFile===null){
-      console.log("Please upload a file");
-      alert("Please upload a file");
-    }
-    else{
-      console.log(" upload a file");
+  const handleSubmit = async (e) => {
+    // e.preventDefault();
+    console.log(result);
+    try {
+      const data = await axios.post(
+        `${server}/api/text/generate`,
+        // `${server}/Text_API/post_api_generateText`,
+        {
+          patientid: 2,
+          text_data: result,
+        },
+        {
+          headers: {
+            "Content-type": "application/json",
+          },
+          // withCredentials: true,
+        }
+      );
+      console.log("data send successfully");
+      // console.log(patientid + "  " + text);
+      setSubmitted(true);
       navigate("../transcription");
+    } catch (error) {
+      console.log(error);
     }
   };
+
+  // const handleTranscription = () => {
+  //   if(selectedFile===null){
+  //     console.log("Please upload a file");
+  //     alert("Please upload a file");
+  //   }
+  //   else{
+  //     console.log(" upload a file");
+  //     navigate("../transcription");
+  //   }
+  // };
 
   return (
     <div className="overflow-hidden">
@@ -98,7 +139,7 @@ export default function Upload() {
               <button
                 className="w-[197px] h-[44px] shrink-0 justify-center sm:mt-0 rounded-[6px] bg-white text-[#6A6868] border-2 border-[#6A6868]"
                 type="submit"
-                onClick={handleTranscription}
+                onClick={handleSubmit} 
               >
                 <span className="font-[Roboto] font-[700] flex flex-row justify-evenly items-center">
                   <div>Transcribe</div>

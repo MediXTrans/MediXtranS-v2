@@ -1,10 +1,10 @@
 import {Reac,useEffect, useState} from "react";
 import "./generateForm.css"
-export default function GenerateForm  ({ resultData }) {
 import React, { useRef } from "react";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import "./generateForm.css";
+export default function GenerateForm  ({ resultData }) {
   
   const formRef = useRef(null);
   const handleDownload = () => {
